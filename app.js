@@ -1,15 +1,15 @@
+require('dotenv').config();
 const chalk = require('chalk');
 const Express = require("express");
 const app = Express();
-require('dotenv').config();
 const controllers = require('./controllers');
 const dbConnection = require('./db');
-const middlewares = require('./middleware');
+const middleware = require('./middleware');
 
-app.use(middlewares.CORS);
 app.use(Express.json());
+app.use(middleware.headers);
 app.use('/user', controllers.userController);
-app.use('/pies', middlewares.validateSession, controllers.pieController);
+app.use('/pies', middleware.validateSession, controllers.pieController);
 
 dbConnection.authenticate()
 .then(() => {
